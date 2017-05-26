@@ -166,7 +166,7 @@ void PASTEMAC(ch,varname) \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a_next, b_next, b11_i, *data ); \
+	bli_auxinfo_set_next_abc( a_next, b_next, b11_i, *data ); \
 \
 	/* lower: b11.i = alpha.r * b11.i - a12.ri * b21.ri;
 	   upper: b11.i = alpha.r * b11.i - a12.ri * b21.ri; */ \

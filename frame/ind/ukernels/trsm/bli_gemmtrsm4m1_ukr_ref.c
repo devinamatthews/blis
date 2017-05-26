@@ -146,7 +146,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemmtrsm4m1_l_ukr: bx111p_i", k+m, n, \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a1x_i, bx1_r, b11_i, *data ); \
+	bli_auxinfo_set_next_abc( a1x_i, bx1_r, b11_i, *data ); \
 \
 	/* lower: b11.i = alpha.r * b11.i - a10.r * b01.i;
 	   upper: b11.i = alpha.r * b11.i - a12.r * b21.i; */ \
@@ -162,7 +162,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemmtrsm4m1_l_ukr: bx111p_i", k+m, n, \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a1x_i, bx1_i, b11_r, *data ); \
+	bli_auxinfo_set_next_abc( a1x_i, bx1_i, b11_r, *data ); \
 \
 	/* lower: b11.i =     1.0 * b11.i - a10.i * b01.r;
 	   upper: b11.i =     1.0 * b11.i - a12.i * b21.r; */ \
@@ -178,7 +178,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemmtrsm4m1_l_ukr: bx111p_i", k+m, n, \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a_next, b_next, b11_r, *data ); \
+	bli_auxinfo_set_next_abc( a_next, b_next, b11_r, *data ); \
 \
 	/* lower: b11.r =     1.0 * b11.r + a10.i * b01.i;
 	   upper: b11.r =     1.0 * b11.r + a12.i * b21.i; */ \
