@@ -90,7 +90,8 @@ void PASTEMAC(ch,varname) \
 	const ctype_r     beta_i    = PASTEMAC(ch,imag)( *beta ); \
 \
 	void*             a_next    = bli_auxinfo_next_a( data ); \
-	void*             b_next    = bli_auxinfo_next_b( data ); \
+    void*             b_next    = bli_auxinfo_next_b( data ); \
+    void*             c_next    = bli_auxinfo_next_c( data ); \
 \
 	dim_t             n_iter; \
 	dim_t             n_elem; \
@@ -151,7 +152,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemm4m1_ukr: bp_i", k, n, \
 	   below. */ \
 \
 \
-	bli_auxinfo_set_next_ab( a_r, b_i, *data ); \
+	bli_auxinfo_set_next_abc( a_r, b_i, ct_i, *data ); \
 \
 	/* ct_r = alpha_r * a_r * b_r; */ \
 	rgemm_ukr \
@@ -166,7 +167,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemm4m1_ukr: bp_i", k, n, \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a_i, b_r, *data ); \
+	bli_auxinfo_set_next_abc( a_i, b_r, ct_i, *data ); \
 \
 	/* ct_i = alpha_r * a_r * b_i; */ \
 	rgemm_ukr \
@@ -181,7 +182,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemm4m1_ukr: bp_i", k, n, \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a_i, b_i, *data ); \
+	bli_auxinfo_set_next_abc( a_i, b_i, ct_r, *data ); \
 \
 	/* ct_i += alpha_r * a_i * b_r; */ \
 	rgemm_ukr \
@@ -196,7 +197,7 @@ PASTEMAC(chr,fprintm)( stdout, "gemm4m1_ukr: bp_i", k, n, \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a_next, b_next, *data ); \
+	bli_auxinfo_set_next_abc( a_next, b_next, c_next, *data ); \
 \
 	/* ct_r += -alpha_r * a_i * b_i; */ \
 	rgemm_ukr \

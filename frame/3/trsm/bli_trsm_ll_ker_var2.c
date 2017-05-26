@@ -373,7 +373,8 @@ void PASTEMAC(ch,varname) \
 				ctype* restrict a11; \
 				ctype* restrict b01; \
 				ctype* restrict b11; \
-				ctype* restrict a2; \
+                ctype* restrict a2; \
+                ctype* restrict c2; \
 \
 				/* Compute various offsets into and lengths of parts of A. */ \
 				off_a10 = 0; \
@@ -398,7 +399,7 @@ void PASTEMAC(ch,varname) \
 				b01 = b1 + ( off_a10 * PACKNR ) / off_scl; \
 				b11 = b1 + ( off_a11 * PACKNR ) / off_scl; \
 \
-				/* Compute the addresses of the next panels of A and B. */ \
+				/* Compute the addresses of the next panels of A, B, and C. */ \
 				a2 = a1 + ps_a_cur; \
 				if ( bli_is_last_iter( i, m_iter, 0, 1 ) ) \
 				{ \
@@ -408,11 +409,14 @@ void PASTEMAC(ch,varname) \
 					if ( j + bli_thread_num_threads(thread) >= n_iter ) \
 						b2 = b_cast; \
 				} \
+                c2 = c11; \
 \
-				/* Save addresses of next panels of A and B to the auxinfo_t
-				   object. */ \
-				bli_auxinfo_set_next_a( a2, aux ); \
-				bli_auxinfo_set_next_b( b2, aux ); \
+                /* Save addresses of next panels of A, B, and C to the auxinfo_t
+                   object.
+                   TODO: We don't attempt to compute the actual value for C as of yet. */ \
+                bli_auxinfo_set_next_a( a2, aux ); \
+                bli_auxinfo_set_next_b( b2, aux ); \
+                bli_auxinfo_set_next_c( c2, aux ); \
 \
 				/* Save the 4m1/3m1 imaginary stride of A to the auxinfo_t
 				   object. */ \
@@ -462,8 +466,9 @@ void PASTEMAC(ch,varname) \
 			else if ( bli_is_strictly_below_diag_n( diagoffa_i, MR, k ) ) \
 			{ \
 				ctype* restrict a2; \
+                ctype* restrict c2; \
 \
-				/* Compute the addresses of the next panels of A and B. */ \
+				/* Compute the addresses of the next panels of A, B, and C. */ \
 				a2 = a1 + rstep_a; \
 				if ( bli_is_last_iter( i, m_iter, 0, 1 ) ) \
 				{ \
@@ -473,11 +478,14 @@ void PASTEMAC(ch,varname) \
 					if ( j + bli_thread_num_threads(thread) >= n_iter ) \
 						b2 = b_cast; \
 				} \
+                c2 = c11; \
 \
-				/* Save addresses of next panels of A and B to the auxinfo_t
-				   object. */ \
-				bli_auxinfo_set_next_a( a2, aux ); \
-				bli_auxinfo_set_next_b( b2, aux ); \
+                /* Save addresses of next panels of A, B, and C to the auxinfo_t
+                   object.
+                   TODO: We don't attempt to compute the actual value for C as of yet. */ \
+                bli_auxinfo_set_next_a( a2, aux ); \
+                bli_auxinfo_set_next_b( b2, aux ); \
+                bli_auxinfo_set_next_c( c2, aux ); \
 \
 				/* Save the 4m1/3m1 imaginary stride of A to the auxinfo_t
 				   object. */ \

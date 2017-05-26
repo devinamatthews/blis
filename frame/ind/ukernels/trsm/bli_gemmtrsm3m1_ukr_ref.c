@@ -102,7 +102,8 @@ void PASTEMAC(ch,varname) \
 	ctype_r           alpha_i     = PASTEMAC(ch,imag)( *alpha ); \
 \
 	void*             a_next      = bli_auxinfo_next_a( data ); \
-	void*             b_next      = bli_auxinfo_next_b( data ); \
+    void*             b_next      = bli_auxinfo_next_b( data ); \
+    void*             c_next      = bli_auxinfo_next_c( data ); \
 \
 	dim_t             i, j; \
 \
@@ -133,7 +134,7 @@ void PASTEMAC(ch,varname) \
 	   b11.r = alpha.r * b11.r - (                 + a12.r * b21.r - a12.i * b21.i );
 	   b11.i = alpha.r * b11.i - ( a12.ri * b21.ri - a12.r * b21.r - a12.i * b21.i ); */ \
 \
-	bli_auxinfo_set_next_ab( a1x_i, bx1_i, *data ); \
+	bli_auxinfo_set_next_abc( a1x_i, bx1_i, ab_i, *data ); \
 \
 	/* lower: ab.r = a10.r * b01.r;
 	   upper: ab.r = a12.r * b21.r; */ \
@@ -149,7 +150,7 @@ void PASTEMAC(ch,varname) \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a1x_ri, bx1_ri, *data ); \
+	bli_auxinfo_set_next_abc( a1x_ri, bx1_ri, c_next, *data ); \
 \
 	/* lower: ab.i = a10.i * b01.i;
 	   upper: ab.i = a12.i * b21.i; */ \
@@ -165,7 +166,7 @@ void PASTEMAC(ch,varname) \
 	  cntx  \
 	); \
 \
-	bli_auxinfo_set_next_ab( a_next, b_next, *data ); \
+	bli_auxinfo_set_next_ab( a_next, b_next, b11_i, *data ); \
 \
 	/* lower: b11.i = alpha.r * b11.i - a12.ri * b21.ri;
 	   upper: b11.i = alpha.r * b11.i - a12.ri * b21.ri; */ \

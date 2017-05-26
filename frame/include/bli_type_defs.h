@@ -843,10 +843,11 @@ typedef struct
 	pack_t schema_a;
 	pack_t schema_b;
 
-	// Pointers to the micro-panels of A and B which will be used by the
+	// Pointers to the micro-panels of A, B, and C which will be used by the
 	// next call to the micro-kernel.
 	void*  a_next;
-	void*  b_next;
+    void*  b_next;
+    void*  c_next;
 
 	// The imaginary strides of A and B.
 	inc_t  is_a;

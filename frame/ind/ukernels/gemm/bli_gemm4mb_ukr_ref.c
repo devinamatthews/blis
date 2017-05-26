@@ -91,7 +91,8 @@ void PASTEMAC(ch,varname) \
 	const pack_t      schema_b  = bli_auxinfo_schema_b( data ); \
 \
 	void*             a_next    = bli_auxinfo_next_a( data ); \
-	void*             b_next    = bli_auxinfo_next_b( data ); \
+    void*             b_next    = bli_auxinfo_next_b( data ); \
+    void*             c_next    = bli_auxinfo_next_c( data ); \
 \
 	dim_t             n_iter; \
 	dim_t             n_elem; \
@@ -142,7 +143,7 @@ void PASTEMAC(ch,varname) \
 		   NOTE: Scaling by alpha_r is not shown above, but is implemented
 		   below. */ \
 \
-		bli_auxinfo_set_next_ab( a_i, b_r, *data ); \
+		bli_auxinfo_set_next_abc( a_i, b_r, ct_i, *data ); \
 \
 		rgemm_ukr \
 		( \
@@ -156,7 +157,7 @@ void PASTEMAC(ch,varname) \
 		  cntx  \
 		); \
 \
-		bli_auxinfo_set_next_ab( a_next, b_next, *data ); \
+		bli_auxinfo_set_next_abc( a_next, b_next, c_next, *data ); \
 \
 		rgemm_ukr \
 		( \
@@ -181,7 +182,7 @@ void PASTEMAC(ch,varname) \
 		   NOTE: Scaling by alpha_r is not shown above, but is implemented
 		   below. */ \
 \
-		bli_auxinfo_set_next_ab( a_i, b_i, *data ); \
+		bli_auxinfo_set_next_abc( a_i, b_i, ct_r, *data ); \
 \
 		rgemm_ukr \
 		( \
@@ -195,7 +196,7 @@ void PASTEMAC(ch,varname) \
 		  cntx  \
 		); \
 \
-		bli_auxinfo_set_next_ab( a_next, b_next, *data ); \
+		bli_auxinfo_set_next_abc( a_next, b_next, c_next, *data ); \
 \
 		rgemm_ukr \
 		( \

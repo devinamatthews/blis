@@ -301,10 +301,12 @@ void PASTEMAC(ch,varname) \
 		/* Interior loop over the m dimension (MR rows at a time). */ \
 		for ( i = ir_thread_id; i < m_iter; i += ir_num_threads ) \
 		{ \
-			ctype* restrict a2; \
+            ctype* restrict a2; \
+            ctype* restrict c2; \
 \
 			a1  = a_cast + i * rstep_a; \
 			c11 = c1     + i * rstep_c; \
+			c2 = c11; \
 \
 			/* Compute the diagonal offset for the submatrix at (i,j). */ \
 			diagoffc_ij = diagoffc - (doff_t)j*NR + (doff_t)i*MR; \
@@ -321,10 +323,12 @@ void PASTEMAC(ch,varname) \
 					b2 = b_cast; \
 			} \
 \
-			/* Save addresses of next panels of A and B to the auxinfo_t
-			   object. */ \
+			/* Save addresses of next panels of A, B, and C to the auxinfo_t
+			   object.
+               TODO: We don't attempt to compute the actual value for C as of yet. */ \
 			bli_auxinfo_set_next_a( a2, aux ); \
-			bli_auxinfo_set_next_b( b2, aux ); \
+            bli_auxinfo_set_next_b( b2, aux ); \
+            bli_auxinfo_set_next_c( c2, aux ); \
 \
 			/* If the diagonal intersects the current MR x NR submatrix, we
 			   compute it the temporary buffer and then add in the elements

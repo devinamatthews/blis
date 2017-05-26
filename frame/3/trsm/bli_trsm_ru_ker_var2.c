@@ -419,7 +419,8 @@ void PASTEMAC(ch,varname) \
 \
 				ctype* restrict a10; \
 				ctype* restrict a11; \
-				ctype* restrict a2; \
+                ctype* restrict a2; \
+                ctype* restrict c2; \
 \
 				m_cur = ( bli_is_not_edge_f( i, m_iter, m_left ) ? MR : m_left ); \
 \
@@ -427,7 +428,7 @@ void PASTEMAC(ch,varname) \
 				a10  = a1 + ( off_b01 * PACKMR ) / off_scl; \
 				a11  = a1 + ( off_b11 * PACKMR ) / off_scl; \
 \
-				/* Compute the addresses of the next panels of A and B. */ \
+				/* Compute the addresses of the next panels of A, B, and C. */ \
 				a2 = a1; \
 				/*if ( bli_is_last_iter( i, m_iter, 0, 1 ) ) */\
 				if ( i + bli_thread_num_threads(thread) >= m_iter ) \
@@ -437,12 +438,15 @@ void PASTEMAC(ch,varname) \
 					if ( bli_is_last_iter( j, n_iter, 0, 1 ) ) \
 						b2 = b_cast; \
 				} \
+                c2 = c11; \
 \
-				/* Save addresses of next panels of A and B to the auxinfo_t
-				   object. NOTE: We swap the values for A and B since the
-				   triangular "A" matrix is actually contained within B. */ \
-				bli_auxinfo_set_next_a( b2, aux ); \
-				bli_auxinfo_set_next_b( a2, aux ); \
+                /* Save addresses of next panels of A and B to the auxinfo_t
+                   object. NOTE: We swap the values for A and B since the
+                   triangular "A" matrix is actually contained within B.
+                   TODO: We don't attempt to compute the actual value for C as of yet. */ \
+                bli_auxinfo_set_next_a( b2, aux ); \
+                bli_auxinfo_set_next_b( a2, aux ); \
+                bli_auxinfo_set_next_c( c2, aux ); \
 \
 				/* Handle interior and edge cases separately. */ \
 				if ( m_cur == MR && n_cur == NR ) \
@@ -504,10 +508,11 @@ void PASTEMAC(ch,varname) \
 				if( trsm_my_iter( i, thread ) ){ \
 \
 				ctype* restrict a2; \
+                ctype* restrict c2; \
 \
 				m_cur = ( bli_is_not_edge_f( i, m_iter, m_left ) ? MR : m_left ); \
 \
-				/* Compute the addresses of the next panels of A and B. */ \
+				/* Compute the addresses of the next panels of A, B, and C. */ \
 				a2 = a1; \
 				/*if ( bli_is_last_iter( i, m_iter, 0, 1 ) ) */\
 				if ( i + bli_thread_num_threads(thread) >= m_iter ) \
@@ -517,12 +522,15 @@ void PASTEMAC(ch,varname) \
 					if ( bli_is_last_iter( j, n_iter, 0, 1 ) ) \
 						b2 = b_cast; \
 				} \
+                c2 = c11; \
 \
-				/* Save addresses of next panels of A and B to the auxinfo_t
-				   object. NOTE: We swap the values for A and B since the
-				   triangular "A" matrix is actually contained within B. */ \
-				bli_auxinfo_set_next_a( b2, aux ); \
-				bli_auxinfo_set_next_b( a2, aux ); \
+                /* Save addresses of next panels of A and B to the auxinfo_t
+                   object. NOTE: We swap the values for A and B since the
+                   triangular "A" matrix is actually contained within B.
+                   TODO: We don't attempt to compute the actual value for C as of yet. */ \
+                bli_auxinfo_set_next_a( b2, aux ); \
+                bli_auxinfo_set_next_b( a2, aux ); \
+                bli_auxinfo_set_next_c( c2, aux ); \
 \
 				/* Handle interior and edge cases separately. */ \
 				if ( m_cur == MR && n_cur == NR ) \

@@ -292,27 +292,45 @@ void PASTEMAC(ch,varname) \
 		/* Loop over the m dimension (MR rows at a time). */ \
 		for ( i = ir_thread_id; i < m_iter; i += ir_num_threads ) \
 		{ \
-			ctype* restrict a2; \
+            ctype* restrict a2; \
+            ctype* restrict c2; \
 \
 			a1  = a_cast + i * rstep_a; \
 			c11 = c1     + i * rstep_c; \
 \
 			m_cur = ( bli_is_not_edge_f( i, m_iter, m_left ) ? MR : m_left ); \
 \
-			/* Compute the addresses of the next panels of A and B. */ \
-			a2 = gemm_get_next_a_micropanel( caucus, a1, rstep_a ); \
+			/* Compute the addresses of the next panels of A, B, and C. */ \
 			if ( bli_is_last_iter( i, m_iter, ir_thread_id, ir_num_threads ) ) \
 			{ \
-				a2 = a_cast; \
-				b2 = gemm_get_next_b_micropanel( thread, b1, cstep_b ); \
+                a2 = gemm_get_first_a_micropanel( caucus, a_cast, rstep_a ); \
+\
 				if ( bli_is_last_iter( j, n_iter, jr_thread_id, jr_num_threads ) ) \
-					b2 = b_cast; \
+				{ \
+					b2 = gemm_get_first_b_micropanel( thread, b_cast, cstep_b ); \
+					/* This is the first C microtile in the next iteration of
+					   the k_c loop, but we could instead cache the first tile
+					   in the next iteration of m_c (might be more helpful but
+					   also more complicated) */ \
+                    c2 = gemm_get_first_c_microtile( caucus, thread, c_cast, rstep_c, cstep_c ); \
+				} \
+				else \
+				{ \
+	                b2 = gemm_get_next_b_micropanel( thread, b1, cstep_b ); \
+	                c2 = gemm_get_next_c_microtile( thread, c1, cstep_c ); \
+				} \
+			} \
+			else \
+			{ \
+	            a2 = gemm_get_next_a_micropanel( caucus, a1, rstep_a ); \
+			    c2 = gemm_get_next_c_microtile( caucus, c11, rstep_c ); \
 			} \
 \
-			/* Save addresses of next panels of A and B to the auxinfo_t
+			/* Save addresses of next panels of A, B, and C to the auxinfo_t
 			   object. */ \
 			bli_auxinfo_set_next_a( a2, aux ); \
-			bli_auxinfo_set_next_b( b2, aux ); \
+            bli_auxinfo_set_next_b( b2, aux ); \
+            bli_auxinfo_set_next_c( c2, aux ); \
 \
 			/* Handle interior and edge cases separately. */ \
 			if ( m_cur == MR && n_cur == NR ) \

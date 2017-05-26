@@ -240,10 +240,12 @@ void PASTEMAC(ch,varname)( \
 	for ( j = 0; j < n_iter; ++j ) \
 	{ \
 		ctype* restrict a1; \
-		ctype* restrict c11; \
+        ctype* restrict c11; \
+        ctype* restrict c2; \
 \
 		a1  = a_cast; \
-		c11 = c1; \
+        c11 = c1; \
+        c2 = c11; \
 \
 		n_cur = ( bli_is_not_edge_f( j, n_iter, n_left ) ? NR : n_left ); \
 \
@@ -269,8 +271,10 @@ void PASTEMAC(ch,varname)( \
 				a2 = a_cast; \
 			} \
 \
-			/* Save address of next panel of A to the auxinfo_t object. */ \
-			bli_auxinfo_set_next_a( a2, aux ); \
+			/* Save address of next panel of A and C to the auxinfo_t object.
+			   TODO: We don't attempt to compute the actual value for C as of yet. */ \
+            bli_auxinfo_set_next_a( a2, aux ); \
+            bli_auxinfo_set_next_c( c2, aux ); \
 \
 			/* Handle interior and edge cases separately. */ \
 			if ( m_cur == MR && n_cur == NR ) \

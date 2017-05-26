@@ -75,6 +75,7 @@ void bli_trsm_ukernel( obj_t*  a,
 	// Fill the auxinfo_t struct in case the micro-kernel uses it.
 	bli_auxinfo_set_next_a( buf_a, data );
 	bli_auxinfo_set_next_b( buf_b, data );
+    bli_auxinfo_set_next_c( buf_c, data );
 
 	bli_auxinfo_set_is_a( 1, data );
 	bli_auxinfo_set_is_b( 1, data );

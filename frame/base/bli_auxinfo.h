@@ -43,6 +43,7 @@
 
 #define bli_auxinfo_next_a( auxinfo )    ( (auxinfo)->a_next )
 #define bli_auxinfo_next_b( auxinfo )    ( (auxinfo)->b_next )
+#define bli_auxinfo_next_c( auxinfo )    ( (auxinfo)->c_next )
 
 #define bli_auxinfo_is_a( auxinfo )      ( (auxinfo)->is_a )
 #define bli_auxinfo_is_b( auxinfo )      ( (auxinfo)->is_b )
@@ -55,11 +56,13 @@
 
 #define bli_auxinfo_set_next_a( a_p, auxinfo ) { (auxinfo).a_next = a_p; }
 #define bli_auxinfo_set_next_b( b_p, auxinfo ) { (auxinfo).b_next = b_p; }
+#define bli_auxinfo_set_next_c( c_p, auxinfo ) { (auxinfo).c_next = c_p; }
 
-#define bli_auxinfo_set_next_ab( a_p, b_p, auxinfo ) \
+#define bli_auxinfo_set_next_abc( a_p, b_p, c_p, auxinfo ) \
 { \
 	bli_auxinfo_set_next_a( a_p, auxinfo ); \
-	bli_auxinfo_set_next_b( b_p, auxinfo ); \
+    bli_auxinfo_set_next_b( b_p, auxinfo ); \
+    bli_auxinfo_set_next_c( c_p, auxinfo ); \
 }
 
 #define bli_auxinfo_set_is_a( is, auxinfo )   { (auxinfo).is_a = is; }

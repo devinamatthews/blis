@@ -92,7 +92,8 @@ void bli_gemmtrsm_ukernel( obj_t*  alpha,
 	{ bli_auxinfo_set_next_a( buf_a1x, data ); }
 	else
 	{ bli_auxinfo_set_next_a( buf_a11, data ); }
-	bli_auxinfo_set_next_b( buf_bx1, data );
+    bli_auxinfo_set_next_b( buf_bx1, data );
+    bli_auxinfo_set_next_c( buf_c11, data );
 
 	// Query the function address from the micro-kernel func_t object.
 	if ( bli_obj_is_lower( *a11 ) )

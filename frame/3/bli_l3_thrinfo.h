@@ -38,24 +38,30 @@
 
 // gemm
 
-#define gemm_get_next_a_micropanel( thread, a1, step ) ( a1 + step * thread->n_way )
-#define gemm_get_next_b_micropanel( thread, b1, step ) ( b1 + step * thread->n_way )
+#define gemm_get_next_a_micropanel( thread, a1, step ) ( (a1) + (step) * (thread)->n_way )
+#define gemm_get_next_b_micropanel( thread, b1, step ) ( (b1) + (step) * (thread)->n_way )
+#define gemm_get_next_c_microtile( thread, c1, step ) ( (c1) + (step) * (thread)->n_way )
+
+#define gemm_get_first_a_micropanel( thread, a0, step ) ( (a0) + (step) * (thread)->work_id )
+#define gemm_get_first_b_micropanel( thread, b0, step ) ( (b0) + (step) * (thread)->work_id )
+#define gemm_get_first_c_microtile( rthread, cthread, c0, rstep, cstep ) \
+    ( (c0) + (rstep) * (rthread)->work_id + (cstep) * (cthread)->work_id )
 
 // herk
 
-#define herk_get_next_a_micropanel( thread, a1, step ) ( a1 + step * thread->n_way )
-#define herk_get_next_b_micropanel( thread, b1, step ) ( b1 + step * thread->n_way )
+#define herk_get_next_a_micropanel( thread, a1, step ) ( (a1) + (step) * (thread)->n_way )
+#define herk_get_next_b_micropanel( thread, b1, step ) ( (b1) + (step) * (thread)->n_way )
 
 // trmm
 
-#define trmm_r_ir_my_iter( index, thread ) ( index % thread->n_way == thread->work_id % thread->n_way )
-#define trmm_r_jr_my_iter( index, thread ) ( index % thread->n_way == thread->work_id % thread->n_way )
-#define trmm_l_ir_my_iter( index, thread ) ( index % thread->n_way == thread->work_id % thread->n_way )
-#define trmm_l_jr_my_iter( index, thread ) ( index % thread->n_way == thread->work_id % thread->n_way )
+#define trmm_r_ir_my_iter( index, thread ) ( (index) % (thread)->n_way == (thread)->work_id % (thread)->n_way )
+#define trmm_r_jr_my_iter( index, thread ) ( (index) % (thread)->n_way == (thread)->work_id % (thread)->n_way )
+#define trmm_l_ir_my_iter( index, thread ) ( (index) % (thread)->n_way == (thread)->work_id % (thread)->n_way )
+#define trmm_l_jr_my_iter( index, thread ) ( (index) % (thread)->n_way == (thread)->work_id % (thread)->n_way )
 
 // trsm
 
-#define trsm_my_iter( index, thread ) ( index % thread->n_way == thread->work_id % thread->n_way )
+#define trsm_my_iter( index, thread ) ( (index) % (thread)->n_way == (thread)->work_id % (thread)->n_way )
 
 //
 // thrinfo_t APIs specific to level-3 operations.
