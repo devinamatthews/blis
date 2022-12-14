@@ -73,7 +73,7 @@
 	   IO preference (e.g. only row-oriented or only column-oriented IO).
 	   Use a temporary microtile for the other two cases as well as edge
 	   cases. */ \
-	GEMM_UKR_SETUP_CT_PRE(ch,mr,nr,row_major,1); \
+	GEMM_UKR_SETUP_CT_PRE(ch,mr,nr,row_major,BLIS_STACK_BUF_ALIGN_SIZE); \
 	const bool _use_ct = ( row_major ? cs_c != 1 : rs_c != 1 ) || \
 	                     m != mr || n != nr; \
 	GEMM_UKR_SETUP_CT_POST(ch);
@@ -84,7 +84,7 @@
 	   preference as well as its opposite via in-register transpose
 	   (e.g. both row- and column-oriented IO). Use a temporary microtile
 	   for the general stride case as well as edge cases. */ \
-	GEMM_UKR_SETUP_CT_PRE(ch,mr,nr,row_major,1); \
+	GEMM_UKR_SETUP_CT_PRE(ch,mr,nr,row_major,BLIS_STACK_BUF_ALIGN_SIZE); \
 	const bool _use_ct = ( cs_c != 1 && rs_c != 1 ) || \
 	                     m != mr || n != nr; \
 	GEMM_UKR_SETUP_CT_POST(ch);
@@ -93,7 +93,7 @@
 \
 	/* Scenario 3: Similar to (2) where the assembly region also supports
 	   general stride I0. Use a temporary microtile only for edge cases. */ \
-	GEMM_UKR_SETUP_CT_PRE(ch,mr,nr,row_major,1); \
+	GEMM_UKR_SETUP_CT_PRE(ch,mr,nr,row_major,BLIS_STACK_BUF_ALIGN_SIZE); \
 	const bool _use_ct = ( m != mr || n != nr ); \
 	GEMM_UKR_SETUP_CT_POST(ch);
 
